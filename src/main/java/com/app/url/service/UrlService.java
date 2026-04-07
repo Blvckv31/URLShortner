@@ -1,13 +1,16 @@
 package com.app.url.service;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.catalina.filters.ExpiresFilter.Duration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.app.url.entity.UrlEntity;
 import com.app.url.repository.UrlRepository;
+
 
 @Service
 public class UrlService {
@@ -52,7 +55,7 @@ public class UrlService {
 				.getLongUrl();
 
 		// 3. Store in cache
-		redisTemplate.opsForValue().set(shortCode, url);
+		redisTemplate.opsForValue().set(shortCode, url, 12, TimeUnit.HOURS);
 
 		return url;
 	}
