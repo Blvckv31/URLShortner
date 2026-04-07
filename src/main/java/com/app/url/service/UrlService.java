@@ -3,6 +3,7 @@ package com.app.url.service;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.app.url.entity.UrlEntity;
@@ -13,6 +14,9 @@ public class UrlService {
 
 	@Autowired
 	private UrlRepository repository;
+	
+	@Autowired
+	private RedisTemplate<String, String> redisTemplate;
 
 	public String shorten(String longUrl) {
 
@@ -37,8 +41,20 @@ public class UrlService {
 	}
 
 	public String getLongUrl(String shortCode) {
-		return repository.findByShortCode(shortCode).orElseThrow(() -> new RuntimeException("URL not found"))
+		// 1. Check cache
+		String cached = redisTemplate.opsForValue().get(shortCode);
+		if (cached != null) {
+			return cached;
+		}
+
+		// 2. Fallback to DB
+		String url = repository.findByShortCode(shortCode).orElseThrow(() -> new RuntimeException("Not found"))
 				.getLongUrl();
+
+		// 3. Store in cache
+		redisTemplate.opsForValue().set(shortCode, url);
+
+		return url;
 	}
 
 	private static final String BASE62 = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
