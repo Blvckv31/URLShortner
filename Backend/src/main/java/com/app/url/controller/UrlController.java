@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.url.dto.ShortenRequest;
-import com.app.url.service.RateLimitService;
 import com.app.url.service.UrlService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,8 +21,8 @@ public class UrlController {
 	@Autowired
 	private UrlService service;
 	
-	@Autowired
-	private RateLimitService rateLimitService;
+    // @Autowired
+    // private RateLimitService rateLimitService;
 
 	@PostMapping("/shorten")
 	public ResponseEntity<?> shorten(@RequestBody ShortenRequest request) {
@@ -34,11 +33,11 @@ public class UrlController {
 
 	@GetMapping("/{code}")
 	public ResponseEntity<?> redirect(@PathVariable String code, HttpServletRequest request) {
-		String ip = request.getRemoteAddr();
+            //String ip = request.getRemoteAddr();
 
-		if (!rateLimitService.allowRequest(ip)) {
-			return ResponseEntity.status(429).body("Too many requests");
-		}
+            // if (!rateLimitService.allowRequest(ip)) {
+            // 	return ResponseEntity.status(429).body("Too many requests");
+            // }
 		String url = service.getLongUrl(code);
 
 		return ResponseEntity.status(302).header("Location", url).build();
