@@ -5,7 +5,7 @@ import Dashboard from "./pages/Dashboard";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/URLShortner">
       <Routes>
 
         <Route path="/" element={<Login />} />
