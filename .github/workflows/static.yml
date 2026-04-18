@@ -25,11 +25,11 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./Frontend/url-shortner-ui
+        working-directory: ./Frontend/url-shortener-ui
 
       - name: Build React app
         run: npm run build
-        working-directory: ./Frontend/url-shortner-ui
+        working-directory: ./Frontend/url-shortener-ui
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -37,7 +37,7 @@ jobs:
       - name: Upload build folder
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./Frontend/url-shortner-ui/build
+          path: ./Frontend/url-shortener-ui/build
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
