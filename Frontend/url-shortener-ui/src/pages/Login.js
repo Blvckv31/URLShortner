@@ -1,7 +1,6 @@
 import { useState } from "react";
 import API from "../api/api";
 import "../App.css";
-import logo from "./Black.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function Login() {
@@ -36,7 +35,7 @@ export default function Login() {
 						<div className="p-5">
 							<div className="text-center mb-4">
 								<img
-									src={logo}
+									src={process.env.PUBLIC_URL + "/Black.png"}
 									alt="logo"
 									style={{ width: "160px" }}
 								/>
